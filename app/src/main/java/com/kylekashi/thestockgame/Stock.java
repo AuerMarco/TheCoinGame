@@ -52,4 +52,9 @@ public class Stock {
             this.amount = amount;
         }
     }
+
+    @Override
+    public String toString() {
+        return stockName + " Current price: " + stockPrice + "\nOwned: " + amount + " Worth: " + amount * stockPrice;
+    }
 }
