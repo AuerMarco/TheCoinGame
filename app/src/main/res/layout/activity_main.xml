@@ -29,6 +29,7 @@
             android:id="@+id/txtMoney"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="forsenE"
             android:text="1000$"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2" />

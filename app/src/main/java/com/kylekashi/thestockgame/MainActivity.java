@@ -2,6 +2,8 @@ package com.kylekashi.thestockgame;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -25,5 +27,9 @@ public class MainActivity extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stocks);
         listView.setAdapter(arrayAdapter);
 
+    }
+
+    public void forsenE(View view) {
+        Log.i("forsen", "E");
     }
 }
