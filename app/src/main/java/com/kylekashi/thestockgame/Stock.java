@@ -1,5 +1,7 @@
 package com.kylekashi.thestockgame;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by Kyle on 24.01.2018.
  */
@@ -45,6 +47,7 @@ public class Stock {
 
     @Override
     public String toString() {
-        return stockName + " Current price: " + stockPrice + "\nOwned: " + amount + " Worth: " + amount * stockPrice;
+        DecimalFormat df = new DecimalFormat("#.##");
+        return stockName + " Current price: " + df.format(stockPrice) + "\nOwned: " + amount + " Worth: " + df.format((amount * stockPrice));
     }
 }

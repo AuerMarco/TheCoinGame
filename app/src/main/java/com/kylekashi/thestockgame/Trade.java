@@ -8,8 +8,9 @@ import android.util.Log;
 
 public class Trade {
 
-    public static void trade(Stock stock) {
+    public static void trade(User user, Stock stock) {
         stock.setAmount(stock.getAmount() + 1);
+        user.setMoney(user.getMoney() - stock.getStockPrice());
 //        Log.i("forsen", "C");
     }
 }
