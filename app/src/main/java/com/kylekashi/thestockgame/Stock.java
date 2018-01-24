@@ -7,13 +7,11 @@ package com.kylekashi.thestockgame;
 public class Stock {
     private String stockName;
     private double stockPrice;
-    private String stockPic;
     private double amount;
 
-    public Stock(String stockName, double stockPrice, String stockPic, double amount) {
+    public Stock(String stockName, double stockPrice, double amount) {
         this.stockName = stockName;
         this.stockPrice = stockPrice;
-        this.stockPic = stockPic;
         this.amount = amount;
     }
 
@@ -33,14 +31,6 @@ public class Stock {
         if (stockPrice > 0) {
             this.stockPrice = stockPrice;
         }
-    }
-
-    public String getStockPic() {
-        return stockPic;
-    }
-
-    public void setStockPic(String stockPic) {
-        this.stockPic = stockPic;
     }
 
     public double getAmount() {
