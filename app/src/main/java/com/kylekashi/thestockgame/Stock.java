@@ -40,7 +40,7 @@ public class Stock {
     }
 
     public void setAmount(double amount) {
-        if (amount > 0) {
+        if (amount >= 0) {
             this.amount = amount;
         }
     }

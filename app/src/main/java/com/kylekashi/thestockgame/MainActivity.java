@@ -121,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sell(View view) {
-
+        Trade trade = new Trade(stocks.get(stockID), -(stocks.get(stockID).getAmount()));
+        trade.sell(user, stocks.get(stockID));
+        update();
     }
 }
