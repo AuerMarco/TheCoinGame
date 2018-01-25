@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,10 +19,13 @@ import static java.util.Arrays.asList;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Stock> stocks;
+    private int stockID;
     private ArrayAdapter<Stock> arrayAdapter;
     private ListView listView;
-    private TextView txtMoney;
-    DecimalFormat df;
+    private TextView txtMoney, txtProfit, txtStockName, txtPrice, txtOwned, txtFunds;
+    private DecimalFormat df;
+    private LinearLayout menuMain;
+    private LinearLayout menuBuySell;
 
     private User user;
     private Stock ea, food, ibm, bmw, sony, sap, squareenix, fromsoftware, netflix, valve, amazon, nestle, google, microsoft, disney, nintendo, bitcoin, redbull, gold, apple;
@@ -31,8 +35,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        menuMain = (LinearLayout) findViewById(R.id.menuMain);
+        menuBuySell = (LinearLayout) findViewById(R.id.menuBuySell);
         df = new DecimalFormat("#.##");
         txtMoney = (TextView) findViewById(R.id.txtMoney);
+        txtProfit = (TextView) findViewById(R.id.txtGainLoss);
+        txtStockName = (TextView) findViewById(R.id.txtStockName);
+        txtPrice = (TextView) findViewById(R.id.txtCurrentPrice);
+        txtOwned = (TextView) findViewById(R.id.txtOwnedAmount);
+        txtFunds = (TextView) findViewById(R.id.txtFunds);
         user = new User();
         listView = (ListView) findViewById(R.id.listView);
         ea = new Stock("EA", 1, 0);
@@ -56,29 +67,60 @@ public class MainActivity extends AppCompatActivity {
         gold = new Stock("Gold", 190, 0);
         apple = new Stock("Apple", 200, 0);
         stocks = new ArrayList<>(asList(ea, food, ibm, bmw, sony, sap, squareenix, fromsoftware, netflix, valve, amazon, nestle, google, microsoft, disney, nintendo, bitcoin, redbull, gold, apple)); //asList("1","2","3","4","5","6","7")
+        stockID = 0;
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stocks);
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                stocks.get(position).setStockPrice(stocks.get(position).getStockPrice()*1.2);
-                update();
+                txtStockName.setText(stocks.get(position).getStockName());
+                txtPrice.setText("" + stocks.get(position).getStockPrice());
+                txtOwned.setText("" + stocks.get(position).getAmount());
+                txtFunds.setText("" + user.getMoney());
+                stockID = position;
+                menuing(view);
+//                stocks.get(position).setStockPrice(stocks.get(position).getStockPrice() * 1.2);
+//                update();
 //                Toast.makeText(MainActivity.this, stocks.get(position).getStockName(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public void forsenE(View view) {
-        Trade.trade(user, ea);
-        update();
-    }
+//    public void forsenE(View view) {
+//        Trade.trade(user, ea);
+//        update();
+//    }
 
     private void update() {
         arrayAdapter.notifyDataSetChanged();
         double worth = 0;
         for (Stock stock : stocks) {
-          worth += stock.getStockPrice() * stock.getAmount();
+            worth += stock.getStockPrice() * stock.getAmount();
         }
         txtMoney.setText("" + df.format(user.getMoney() + worth) + "$");
+        txtProfit.setText("" + df.format(user.getProfit()) + "$");
+        txtPrice.setText("" + df.format(stocks.get(stockID).getStockPrice()));
+        txtOwned.setText("" + df.format(stocks.get(stockID).getAmount()));
+        txtFunds.setText("" + df.format(user.getMoney()) + "$");
+    }
+
+    public void menuing(View view) {
+        if (menuMain.getVisibility() == View.VISIBLE) {
+            menuMain.setVisibility(View.INVISIBLE);
+            menuBuySell.setVisibility(View.VISIBLE);
+        } else {
+            menuMain.setVisibility(View.VISIBLE);
+            menuBuySell.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void buy(View view) {
+        Trade trade = new Trade(stocks.get(stockID), 1);
+        trade.buy(user, stocks.get(stockID));
+        update();
+    }
+
+    public void sell(View view) {
+
     }
 }
