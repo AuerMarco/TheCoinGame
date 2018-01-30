@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         menuBuySell = (LinearLayout) findViewById(R.id.menuBuySell);
         df = new DecimalFormat("#.##");
         txtMoney = (TextView) findViewById(R.id.txtMoney);
-        txtProfit = (TextView) findViewById(R.id.txtGainLoss);
+//        txtProfit = (TextView) findViewById(R.id.txtGainLoss);
         txtStockName = (TextView) findViewById(R.id.txtStockName);
         txtPrice = (TextView) findViewById(R.id.txtCurrentPrice);
         txtOwned = (TextView) findViewById(R.id.txtOwnedAmount);
@@ -87,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 //    public void forsenE(View view) {
-//        Trade.trade(user, ea);
+////        Trade.trade(user, ea);
+//        Log.i("Test","???");
 //        update();
 //    }
 
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             worth += stock.getStockPrice() * stock.getAmount();
         }
         txtMoney.setText("" + df.format(user.getMoney() + worth) + "$");
-        txtProfit.setText("" + df.format(user.getProfit()) + "$");
+//        txtProfit.setText("" + df.format(user.getProfit()) + "$");
         txtPrice.setText("" + df.format(stocks.get(stockID).getStockPrice()));
         txtOwned.setText("" + df.format(stocks.get(stockID).getAmount()));
         txtFunds.setText("" + df.format(user.getMoney()) + "$");
@@ -106,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void menuing(View view) {
         if (menuMain.getVisibility() == View.VISIBLE) {
+            update();
             menuMain.setVisibility(View.INVISIBLE);
             menuBuySell.setVisibility(View.VISIBLE);
         } else {
@@ -123,6 +125,16 @@ public class MainActivity extends AppCompatActivity {
     public void sell(View view) {
         Trade trade = new Trade(stocks.get(stockID), -(stocks.get(stockID).getAmount()));
         trade.sell(user, stocks.get(stockID));
+        update();
+    }
+
+    public void rise(View view) {
+        PriceChange.rise(stocks.get(stockID));
+        update();
+    }
+
+    public void drop(View view) {
+        PriceChange.drop(stocks.get(stockID));
         update();
     }
 }

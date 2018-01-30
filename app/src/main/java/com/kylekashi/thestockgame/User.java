@@ -32,7 +32,7 @@ public class User {
     }
 
     public void setMoney(double money) {
-        if (money > 0) {
+        if (money >= 0) {
             this.money = money;
         }
     }
@@ -58,8 +58,6 @@ public class User {
     }
 
     public void setProfit(double profit) {
-        if (profit > 0) {
             this.profit = profit;
-        }
     }
 }

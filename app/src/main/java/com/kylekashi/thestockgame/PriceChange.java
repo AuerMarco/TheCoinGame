@@ -8,7 +8,13 @@ import android.util.Log;
 
 public class PriceChange {
 
-    public static void forsen() {
-        Log.i("forsen", "T");
+    public static void rise(Stock stock) {
+        stock.setStockPrice(stock.getStockPrice() * 1.2);
+        Log.i("forsen", "R");
+    }
+
+    public static void drop(Stock stock) {
+        stock.setStockPrice(stock.getStockPrice() * 0.8);
+        Log.i("forsen", "D");
     }
 }
