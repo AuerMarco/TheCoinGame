@@ -1,5 +1,6 @@
 package com.kylekashi.thestockgame;
 
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private DecimalFormat df;
     private LinearLayout menuMain;
     private LinearLayout menuBuySell;
+    private CountDownTimer countdown;
 
     private User user;
     private Stock ea, food, ibm, bmw, sony, sap, squareenix, fromsoftware, netflix, valve, amazon, nestle, google, microsoft, disney, nintendo, bitcoin, redbull, gold, apple;
@@ -84,6 +86,22 @@ public class MainActivity extends AppCompatActivity {
 //                Toast.makeText(MainActivity.this, stocks.get(position).getStockName(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        countdown = new CountDownTimer(10000, 1000) {
+            @Override
+            public void onTick(long l) {
+//                PriceChange.rng(stocks);
+//                update();
+            }
+
+            @Override
+            public void onFinish() {
+                PriceChange.rng(stocks);
+                update();
+                this.start();
+//                Toast.makeText(MainActivity.this, "Toast", Toast.LENGTH_SHORT).show();
+            }
+        }.start();
     }
 
 //    public void forsenE(View view) {
@@ -129,12 +147,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void rise(View view) {
-        PriceChange.rise(stocks.get(stockID));
+        PriceChange.rise20Percent(stocks.get(stockID));
         update();
     }
 
     public void drop(View view) {
-        PriceChange.drop(stocks.get(stockID));
+        PriceChange.drop20Percent((stocks.get(stockID)));
         update();
+    }
+
+    private void reset() {
+        countdown.start();
     }
 }
