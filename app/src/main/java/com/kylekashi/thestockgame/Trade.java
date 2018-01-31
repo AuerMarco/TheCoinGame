@@ -22,17 +22,17 @@ public class Trade {
         this.oldWorth = this.currentWorth;
     }
 
-    public void buy(User user, Stock stock) {
-        if (user.getMoney() > 0) {
-            stock.setAmount(stock.getAmount() + 1);
+    public void buy(User user, Stock stock, int amount) {
+        if (user.getMoney() > 0 && user.getMoney() >= (stock.getStockPrice() * amount)) {
+            stock.setAmount(stock.getAmount() + amount);
             user.setMoney(user.getMoney() - stock.getStockPrice() * amount);
         }
     }
 
-    public void sell(User user, Stock stock) {
-        if (stock.getAmount() > 0) {
-            user.setMoney(user.getMoney() + stock.getStockPrice() * (-amount));
-            stock.setAmount(0);
+    public void sell(User user, Stock stock, int amount) {
+        if (stock.getAmount() >= amount) {
+            user.setMoney(user.getMoney() + (stock.getStockPrice() * amount));
+            stock.setAmount(stock.getAmount() - amount);
 //            Log.i("ayy", "lmao");
         }
     }

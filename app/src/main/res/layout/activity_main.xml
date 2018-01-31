@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/menuMain"
         app:layout_constraintLeft_toLeftOf="@+id/menuMain"
         app:layout_constraintRight_toLeftOf="@+id/menuMain"
@@ -111,45 +111,145 @@
 
         </LinearLayout>
 
+        <SeekBar
+            android:id="@+id/barBuy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/butBuy"
-                style="@style/Widget.AppCompat.Button.Colored"
+                android:id="@+id/butBuy25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/holo_green_dark"
-                android:onClick="buy"
-                android:text="Buy 1" />
+                android:onClick="buyAmount"
+                android:tag="25"
+                android:text="25%" />
 
             <Button
-                android:id="@+id/butSell"
-                style="@style/Widget.AppCompat.Button.Colored"
+                android:id="@+id/butBuy50"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/holo_red_dark"
-                android:onClick="sell"
-                android:text="Sell All" />
+                android:onClick="buyAmount"
+                android:tag="50"
+                android:text="50%" />
+
+            <Button
+                android:id="@+id/butBuy75"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="buyAmount"
+                android:tag="75"
+                android:text="75%" />
+
+            <Button
+                android:id="@+id/butBuy100"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="buyAmount"
+                android:tag="100"
+                android:text="100%" />
         </LinearLayout>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/butBuy"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="rise"
-            android:text="Rise" />
+            android:layout_weight="1"
+            android:background="@android:color/holo_green_dark"
+            android:onClick="buy"
+            android:text="Buy" />
+
+        <EditText
+            android:id="@+id/inpSell"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:text="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/butSell25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="sellAmount"
+                android:tag="25"
+                android:text="25%" />
+
+            <Button
+                android:id="@+id/butSell50"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="sellAmount"
+                android:tag="50"
+                android:text="50%" />
+
+            <Button
+                android:id="@+id/butSell75"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="sellAmount"
+                android:tag="75"
+                android:text="75%" />
+
+            <Button
+                android:id="@+id/butSell100"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="sellAmount"
+                android:tag="100"
+                android:text="100%" />
+        </LinearLayout>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/butSell"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="drop"
-            android:text="Drop" />
+            android:layout_weight="1"
+            android:background="@android:color/holo_red_dark"
+            android:onClick="sell"
+            android:text="Sell" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/rise"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="rise"
+                android:text="Rise" />
+
+            <Button
+                android:id="@+id/drop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="drop"
+                android:text="Drop" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -164,7 +264,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

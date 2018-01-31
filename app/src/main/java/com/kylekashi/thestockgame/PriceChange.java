@@ -14,7 +14,7 @@ public class PriceChange {
     public static void rng(ArrayList<Stock> stocks) {
         Random r = new Random();
         for (Stock stock : stocks) {
-            upsAndDowns(stock, 0.6 + (1.4 - 0.6) * r.nextDouble());
+            upsAndDowns(stock, 0.6 + (1.48 - 0.6) * r.nextDouble());
         }
     }
 

@@ -9,9 +9,9 @@ import java.text.DecimalFormat;
 public class Stock {
     private String stockName;
     private double stockPrice;
-    private double amount;
+    private int amount;
 
-    public Stock(String stockName, double stockPrice, double amount) {
+    public Stock(String stockName, double stockPrice, int amount) {
         this.stockName = stockName;
         this.stockPrice = stockPrice;
         this.amount = amount;
@@ -35,11 +35,11 @@ public class Stock {
         }
     }
 
-    public double getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(int amount) {
         if (amount >= 0) {
             this.amount = amount;
         }
@@ -48,6 +48,6 @@ public class Stock {
     @Override
     public String toString() {
         DecimalFormat df = new DecimalFormat("#.##");
-        return stockName + " Current price: " + df.format(stockPrice) + "\nOwned: " + amount + " Worth: " + df.format((amount * stockPrice));
+        return stockName + " Current price: " + df.format(stockPrice) + "$\nOwned: " + amount + " Worth: " + df.format((amount * stockPrice));
     }
 }

@@ -3,12 +3,14 @@ package com.kylekashi.thestockgame;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout menuMain;
     private LinearLayout menuBuySell;
     private CountDownTimer countdown;
+    private EditText inpSell;
+    private SeekBar barBuy;
+    private Button butBuy;
 
     private User user;
     private Stock ea, food, ibm, bmw, sony, sap, squareenix, fromsoftware, netflix, valve, amazon, nestle, google, microsoft, disney, nintendo, bitcoin, redbull, gold, apple;
@@ -48,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
         txtFunds = (TextView) findViewById(R.id.txtFunds);
         user = new User();
         listView = (ListView) findViewById(R.id.listView);
+        inpSell = (EditText) findViewById(R.id.inpSell);
+        barBuy = (SeekBar) findViewById(R.id.barBuy);
+        butBuy = (Button) findViewById(R.id.butBuy);
+
         ea = new Stock("EA", 1, 0);
         food = new Stock("Food", 10, 0);
         ibm = new Stock("IBM", 20, 0);
@@ -102,6 +111,24 @@ public class MainActivity extends AppCompatActivity {
 //                Toast.makeText(MainActivity.this, "Toast", Toast.LENGTH_SHORT).show();
             }
         }.start();
+
+        barBuy.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                butBuy.setText("Buy " + progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
     }
 
 //    public void forsenE(View view) {
@@ -121,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         txtPrice.setText("" + df.format(stocks.get(stockID).getStockPrice()));
         txtOwned.setText("" + df.format(stocks.get(stockID).getAmount()));
         txtFunds.setText("" + df.format(user.getMoney()) + "$");
+        barBuy.setMax((int) (user.getMoney() / stocks.get(stockID).getStockPrice()));
     }
 
     public void menuing(View view) {
@@ -135,15 +163,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buy(View view) {
-        Trade trade = new Trade(stocks.get(stockID), 1);
-        trade.buy(user, stocks.get(stockID));
-        update();
+        if (!(inpSell.getText().toString().equals(""))) {
+            Trade trade = new Trade(stocks.get(stockID), barBuy.getProgress());
+            trade.buy(user, stocks.get(stockID), barBuy.getProgress());
+            update();
+        }
     }
 
     public void sell(View view) {
-        Trade trade = new Trade(stocks.get(stockID), -(stocks.get(stockID).getAmount()));
-        trade.sell(user, stocks.get(stockID));
-        update();
+//        Double.parseDouble(inpSell.getText().toString())
+        if (!(inpSell.getText().toString().equals(""))) {
+            Trade trade = new Trade(stocks.get(stockID), -(stocks.get(stockID).getAmount()));
+            trade.sell(user, stocks.get(stockID), Integer.parseInt(inpSell.getText().toString()));
+            update();
+        }
     }
 
     public void rise(View view) {
@@ -156,7 +189,45 @@ public class MainActivity extends AppCompatActivity {
         update();
     }
 
-    private void reset() {
-        countdown.start();
+    public void buyAmount(View view) {
+        switch (view.getTag().toString()) {
+            case "25":
+                barBuy.setProgress((int)(((user.getMoney() / stocks.get(stockID).getStockPrice())*0.25)));
+//                Toast.makeText(this, "25", Toast.LENGTH_SHORT).show();
+                break;
+            case "50":
+                barBuy.setProgress((int)(((user.getMoney() / stocks.get(stockID).getStockPrice())*0.5)));
+//                Toast.makeText(this, "50", Toast.LENGTH_SHORT).show();
+                break;
+            case "75":
+                barBuy.setProgress((int)(((user.getMoney() / stocks.get(stockID).getStockPrice())*0.75)));
+//                Toast.makeText(this, "75", Toast.LENGTH_SHORT).show();
+                break;
+            case "100":
+                barBuy.setProgress((int)(((user.getMoney() / stocks.get(stockID).getStockPrice()))));
+//                Toast.makeText(this, "100", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+    public void sellAmount(View view) {
+        switch (view.getTag().toString()) {
+            case "25":
+                inpSell.setText("" + ((int)(stocks.get(stockID).getAmount() * 0.25)));
+//                Toast.makeText(this, "25", Toast.LENGTH_SHORT).show();
+                break;
+            case "50":
+                inpSell.setText("" + ((int)(stocks.get(stockID).getAmount() * 0.5)));
+//                Toast.makeText(this, "50", Toast.LENGTH_SHORT).show();
+                break;
+            case "75":
+                inpSell.setText("" + ((int)(stocks.get(stockID).getAmount() * 0.75)));
+//                Toast.makeText(this, "75", Toast.LENGTH_SHORT).show();
+                break;
+            case "100":
+                inpSell.setText("" + ((int)(stocks.get(stockID).getAmount())));
+//                Toast.makeText(this, "100", Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 }
