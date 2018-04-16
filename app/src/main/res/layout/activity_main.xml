@@ -8,8 +8,8 @@
 
     <LinearLayout
         android:id="@+id/menuBuySell"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/menuMain"
@@ -266,9 +266,11 @@
         android:orientation="vertical"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
@@ -278,7 +280,6 @@
             android:id="@+id/txtMoney"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="forsenE"
             android:text="1000$"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2" />

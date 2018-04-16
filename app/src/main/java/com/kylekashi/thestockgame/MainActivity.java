@@ -3,6 +3,7 @@ package com.kylekashi.thestockgame;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import static java.util.Arrays.asList;
 
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText inpSell;
     private SeekBar barBuy;
     private Button butBuy;
+    String apiURL;
 
     private User user;
     private Stock ea, food, ibm, bmw, sony, sap, squareenix, fromsoftware, netflix, valve, amazon, nestle, google, microsoft, disney, nintendo, bitcoin, redbull, gold, apple;
@@ -57,27 +60,35 @@ public class MainActivity extends AppCompatActivity {
         barBuy = (SeekBar) findViewById(R.id.barBuy);
         butBuy = (Button) findViewById(R.id.butBuy);
 
-        ea = new Stock("EA", 1, 0);
-        food = new Stock("Food", 10, 0);
-        ibm = new Stock("IBM", 20, 0);
-        bmw = new Stock("BMW", 30, 0);
-        sony = new Stock("Sony", 40, 0);
-        sap = new Stock("SAP", 50, 0);
-        squareenix = new Stock("Square Enix", 70, 0);
-        fromsoftware = new Stock("FromSoftware", 80, 0);
-        netflix = new Stock("Netflix", 90, 0);
-        valve = new Stock("Valve", 100, 0);
-        amazon = new Stock("Amazon", 110, 0);
-        nestle = new Stock("Nestle", 120, 0);
-        google = new Stock("Google", 130, 0);
-        microsoft = new Stock("Microsoft", 140, 0);
-        disney = new Stock("Disney", 150, 0);
-        nintendo = new Stock("Nintendo", 160, 0);
-        bitcoin = new Stock("Bitcoin", 170, 0);
-        redbull = new Stock("Red Bull", 180, 0);
-        gold = new Stock("Gold", 190, 0);
-        apple = new Stock("Apple", 200, 0);
-        stocks = new ArrayList<>(asList(ea, food, ibm, bmw, sony, sap, squareenix, fromsoftware, netflix, valve, amazon, nestle, google, microsoft, disney, nintendo, bitcoin, redbull, gold, apple)); //asList("1","2","3","4","5","6","7")
+        apiURL = "https://www.binance.com/api/v1/ticker/allPrices";
+//        ea = new Stock("EA", 1, 0);
+//        food = new Stock("Food", 10, 0);
+//        ibm = new Stock("IBM", 20, 0);
+//        bmw = new Stock("BMW", 30, 0);
+//        sony = new Stock("Sony", 40, 0);
+//        sap = new Stock("SAP", 50, 0);
+//        squareenix = new Stock("Square Enix", 70, 0);
+//        fromsoftware = new Stock("FromSoftware", 80, 0);
+//        netflix = new Stock("Netflix", 90, 0);
+//        valve = new Stock("Valve", 100, 0);
+//        amazon = new Stock("Amazon", 110, 0);
+//        nestle = new Stock("Nestle", 120, 0);
+//        google = new Stock("Google", 130, 0);
+//        microsoft = new Stock("Microsoft", 140, 0);
+//        disney = new Stock("Disney", 150, 0);
+//        nintendo = new Stock("Nintendo", 160, 0);
+//        bitcoin = new Stock("Bitcoin", 170, 0);
+//        redbull = new Stock("Red Bull", 180, 0);
+//        gold = new Stock("Gold", 190, 0);
+//        apple = new Stock("Apple", 200, 0);
+//        stocks = new ArrayList<>(asList(ea, food, ibm, bmw, sony, sap, squareenix, fromsoftware, netflix, valve, amazon, nestle, google, microsoft, disney, nintendo, bitcoin, redbull, gold, apple)); //asList("1","2","3","4","5","6","7")
+        try {
+            stocks = new JSONparser().execute(apiURL).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         stockID = 0;
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stocks);
         listView.setAdapter(arrayAdapter);
@@ -105,7 +116,16 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                PriceChange.rng(stocks);
+//                PriceChange.rng(stocks);
+                ArrayList<Stock> currentCoins = null;
+                try {
+                    currentCoins = new JSONparser().execute(apiURL).get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+                PriceChange.getPrices(stocks, currentCoins);
                 update();
                 this.start();
 //                Toast.makeText(MainActivity.this, "Toast", Toast.LENGTH_SHORT).show();
@@ -131,11 +151,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    public void forsenE(View view) {
-////        Trade.trade(user, ea);
-//        Log.i("Test","???");
-//        update();
-//    }
+    public void forsenE(View view) {
+        Log.i("forsen", "E");
+//        Trade.trade(user, ea);
+//        ArrayList<Stock> currentCoins = null;
+//        try {
+//            currentCoins = new JSONparser().execute(apiURL).get();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
+//        PriceChange.getPrices(stocks, currentCoins);
+        update();
+    }
 
     private void update() {
         arrayAdapter.notifyDataSetChanged();
@@ -192,19 +221,19 @@ public class MainActivity extends AppCompatActivity {
     public void buyAmount(View view) {
         switch (view.getTag().toString()) {
             case "25":
-                barBuy.setProgress((int)(((user.getMoney() / stocks.get(stockID).getStockPrice())*0.25)));
+                barBuy.setProgress((int) (((user.getMoney() / stocks.get(stockID).getStockPrice()) * 0.25)));
 //                Toast.makeText(this, "25", Toast.LENGTH_SHORT).show();
                 break;
             case "50":
-                barBuy.setProgress((int)(((user.getMoney() / stocks.get(stockID).getStockPrice())*0.5)));
+                barBuy.setProgress((int) (((user.getMoney() / stocks.get(stockID).getStockPrice()) * 0.5)));
 //                Toast.makeText(this, "50", Toast.LENGTH_SHORT).show();
                 break;
             case "75":
-                barBuy.setProgress((int)(((user.getMoney() / stocks.get(stockID).getStockPrice())*0.75)));
+                barBuy.setProgress((int) (((user.getMoney() / stocks.get(stockID).getStockPrice()) * 0.75)));
 //                Toast.makeText(this, "75", Toast.LENGTH_SHORT).show();
                 break;
             case "100":
-                barBuy.setProgress((int)(((user.getMoney() / stocks.get(stockID).getStockPrice()))));
+                barBuy.setProgress((int) (((user.getMoney() / stocks.get(stockID).getStockPrice()))));
 //                Toast.makeText(this, "100", Toast.LENGTH_SHORT).show();
                 break;
         }
@@ -213,19 +242,19 @@ public class MainActivity extends AppCompatActivity {
     public void sellAmount(View view) {
         switch (view.getTag().toString()) {
             case "25":
-                inpSell.setText("" + ((int)(stocks.get(stockID).getAmount() * 0.25)));
+                inpSell.setText("" + ((int) (stocks.get(stockID).getAmount() * 0.25)));
 //                Toast.makeText(this, "25", Toast.LENGTH_SHORT).show();
                 break;
             case "50":
-                inpSell.setText("" + ((int)(stocks.get(stockID).getAmount() * 0.5)));
+                inpSell.setText("" + ((int) (stocks.get(stockID).getAmount() * 0.5)));
 //                Toast.makeText(this, "50", Toast.LENGTH_SHORT).show();
                 break;
             case "75":
-                inpSell.setText("" + ((int)(stocks.get(stockID).getAmount() * 0.75)));
+                inpSell.setText("" + ((int) (stocks.get(stockID).getAmount() * 0.75)));
 //                Toast.makeText(this, "75", Toast.LENGTH_SHORT).show();
                 break;
             case "100":
-                inpSell.setText("" + ((int)(stocks.get(stockID).getAmount())));
+                inpSell.setText("" + ((int) (stocks.get(stockID).getAmount())));
 //                Toast.makeText(this, "100", Toast.LENGTH_SHORT).show();
                 break;
         }

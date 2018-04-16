@@ -23,6 +23,14 @@ public class PriceChange {
 //        Log.i("forsen", "R");
     }
 
+    public static void getPrices(ArrayList<Stock> coinList, ArrayList<Stock> currentCoins) {
+        int counter = 0;
+        for (Stock stock : coinList) {
+            stock.setStockPrice(currentCoins.get(counter).getStockPrice());
+            counter++;
+        }
+    }
+
     public static void rise20Percent(Stock stock) {
         stock.setStockPrice(stock.getStockPrice() * 1.2);
 //        Log.i("forsen", "R");
